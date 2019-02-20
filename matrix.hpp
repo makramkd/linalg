@@ -7,6 +7,7 @@
 #include <utility>
 #include <initializer_list>
 #include <cstdint>
+#include <cassert>
 
 namespace parmat {
 
@@ -16,6 +17,9 @@ namespace parmat {
     public:
       typedef uint64_t size_type;
 
+      // Dtor
+      ~matrix(){}
+
       // Useless default ctor
       matrix()
       : _mat(0),
@@ -24,15 +28,13 @@ namespace parmat {
       {
       }
 
-      matrix(size_type rows, size_type columns, std::initializer_list<T> literal)
-      : _mat(rows * cols),
+      matrix(size_type rows, size_type columns, const std::initializer_list<T>& init_list)
+      : _mat(rows * columns),
         rows(rows),
-        cols(cols)
+        cols(columns)
       {
-        // TODO: what to do in case of invalid? currently, soft failure.
-        // Exceptions are not an option.
-        if (literal.size() == rows * columns) {
-          std::copy(literal.begin(), literal.end(), _mat.begin());
+        if (init_list.size() == (rows * cols)) {
+          std::copy(init_list.begin(), init_list.end(), this->_mat.begin());
         }
       }
 
