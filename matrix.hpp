@@ -121,9 +121,10 @@ namespace parmat {
 
   template <typename T>
   std::ostream& operator<<(std::ostream& os, const matrix<T>& m) {
+    using size_type = typename matrix<T>::size_type;
     os << "[";
-    for (auto i = 0; i < m.row_count(); ++i) {
-      for (auto j = 0; j < m.col_count(); ++j) {
+    for (size_type i = 0; i < m.row_count(); ++i) {
+      for (size_type j = 0; j < m.col_count(); ++j) {
         if (j != m.col_count() - 1) {
           os << m(i, j) << ", ";
         } else {
@@ -134,7 +135,7 @@ namespace parmat {
         os << ";" << std::endl;
       }
     }
-    os << "]";
+    os << "]\n";
     return os;
   }
 
