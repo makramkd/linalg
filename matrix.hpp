@@ -15,6 +15,14 @@ namespace parmat {
     public:
       typedef uint64_t size_type;
 
+      // Useless default ctor
+      matrix()
+      : _mat(0),
+        rows(0),
+        cols(0)
+      {
+      }
+
       // Construct default initialized matrix
       matrix(size_type rows, size_type columns)
       : _mat(rows * columns),
