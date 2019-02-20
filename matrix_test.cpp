@@ -69,19 +69,64 @@ namespace {
   }
 
   TEST(MatrixTest, CopyAssigmentOperator) {
+    const parmat::matrix<int> m(2, 2, {
+      1, 0,
+      0, 1
+    });
 
+    const auto m2 = m;
+
+    EXPECT_EQ(1, m2(0, 0));
+    EXPECT_EQ(0, m2(0, 1));
+    EXPECT_EQ(0, m2(1, 0));
+    EXPECT_EQ(1, m2(1, 1));
   }
 
   TEST(MatrixTest, MoveAssignmentOperator) {
+    // TODO: how to test move?
+    parmat::matrix<int> m(2, 2, {
+      1, 0,
+      0, 1
+    });
 
+    const auto m2 = std::move(m);
+
+    EXPECT_EQ(1, m2(0, 0));
+    EXPECT_EQ(0, m2(0, 1));
+    EXPECT_EQ(0, m2(1, 0));
+    EXPECT_EQ(1, m2(1, 1));
   }
 
   TEST(MatrixTest, PlusEqualsOperator) {
+    parmat::matrix<int> m(2, 2, {
+      1, 0,
+      0, 1
+    });
 
+    parmat::matrix<int> m2(2, 2, {
+      0, 1,
+      1, 0
+    });
+
+    m += m2;
+
+    EXPECT_EQ(1, m(0, 0));
+    EXPECT_EQ(1, m(0, 1));
+    EXPECT_EQ(1, m(1, 0));
+    EXPECT_EQ(1, m(1, 1));
   }
 
   TEST(MatrixTest, IndexOperator) {
 
+  }
+
+  TEST(MatrixTest, Identity) {
+    auto i = parmat::identity<int>(32, 1);
+
+    using size_type = typename parmat::matrix<int>::size_type;
+    for (size_type j = 0; j < i.row_count(); ++j) {
+      EXPECT_EQ(1, i(j, j));
+    }
   }
 }
 

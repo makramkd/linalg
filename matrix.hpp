@@ -71,15 +71,17 @@ namespace parmat {
 
       matrix& operator=(const matrix& other)
       {
-        this->_mat = other._mat;
-        this->rows = other.rows;
-        this->cols = other.cols;
-
+        if (this != &other) {
+          this->_mat = other._mat;
+          this->rows = other.rows;
+          this->cols = other.cols;
+        }
         return *this;
       }
 
       matrix& operator=(matrix&& other)
       {
+        // TODO: check similar to copy assignment operator?
         this->_mat = std::move(other._mat);
         this->rows = std::move(other.rows);
         this->cols = std::move(other.cols);
@@ -88,11 +90,14 @@ namespace parmat {
       }
 
       matrix& operator+=(const matrix& rhs) {
-        // TODO: should this be done depending on how big the matrix is?
-        #pragma omp parallel for
-        for (auto i = 0; i < row_count(); ++i) {
-          for (auto j = 0; j < col_count(); ++j) {
-            this->operator()(i, j) = this->operator()(i, j) + rhs(i, j);
+        // TODO: error handling?
+        assert(this->rows == rhs.rows);
+        assert(this->cols == rhs.cols);
+
+        for (size_type i = 0; i < this->rows; ++i) {
+          #pragma omp parallel for
+          for (size_type j = 0; j < this->cols; ++j) {
+            this->operator()(i, j) += rhs(i, j);
           }
         }
         return *this;
@@ -142,12 +147,13 @@ namespace parmat {
   }
 
   template <typename T>
-  matrix<T> identity(uint32_t size) {
+  matrix<T> identity(typename matrix<T>::size_type size, T identity) {
     auto mat = matrix<T>(size, size);
     // TODO: should this be done depending on how big the matrix is?
+    using size_type = typename matrix<T>::size_type;
     #pragma omp parallel for
-    for (auto i = 0; i < mat.row_count(); ++i) {
-      mat(i, i) = 1;
+    for (size_type i = 0; i < mat.row_count(); ++i) {
+      mat(i, i) = identity;
     }
     return mat;
   }
