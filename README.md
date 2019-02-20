@@ -19,3 +19,4 @@ See [here](https://www.openmp.org/resources/openmp-compilers-tools/) for compile
 * Benchmarks for all algorithms, compared with the state of the art. I don't expect to write faster code, but I do hope to be in the same ball park, with hopefully more readable code than LAPACK.
 * Easily include-able into other projects via a single (not sure yet) header.
 * Simple looking code.
+* Binary serialization/deserialization of matrices. This is so that data can be saved/loaded efficiently in terms of both space and time, similar to what `pickle` is for Python applications.
