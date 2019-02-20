@@ -19,7 +19,7 @@ fi
 
 # Build tests
 echo "Building unit tests"
-g++-8 -std=c++2a -fconcepts -fopenmp -isystem $GTEST_DIR/include \
+g++-8 -Wall -std=c++2a -fconcepts -fopenmp -isystem $GTEST_DIR/include \
     -pthread matrix_test.cpp libgtest.a -o matrix_test
 
 # Run tests
