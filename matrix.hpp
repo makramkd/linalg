@@ -5,6 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <utility>
+#include <initializer_list>
 #include <cstdint>
 
 namespace parmat {
@@ -21,6 +22,18 @@ namespace parmat {
         rows(0),
         cols(0)
       {
+      }
+
+      matrix(size_type rows, size_type columns, std::initializer_list<T> literal)
+      : _mat(rows * cols),
+        rows(rows),
+        cols(cols)
+      {
+        // TODO: what to do in case of invalid? currently, soft failure.
+        // Exceptions are not an option.
+        if (literal.size() == rows * columns) {
+          std::copy(literal.begin(), literal.end(), _mat.begin());
+        }
       }
 
       // Construct default initialized matrix
@@ -59,6 +72,15 @@ namespace parmat {
         this->_mat = other._mat;
         this->rows = other.rows;
         this->cols = other.cols;
+
+        return *this;
+      }
+
+      matrix& operator=(matrix&& other)
+      {
+        this->_mat = std::move(other._mat);
+        this->rows = std::move(other.rows);
+        this->cols = std::move(other.cols);
 
         return *this;
       }

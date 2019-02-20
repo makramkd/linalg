@@ -12,15 +12,16 @@ fi
 if [ ! -f libgtest.a ]
 then
   echo "Building googletest"
-  g++ -std=c++11 -isystem ${GTEST_DIR}/include -I${GTEST_DIR} \
+  g++ -std=c++2a -isystem ${GTEST_DIR}/include -I${GTEST_DIR} \
       -pthread -c ${GTEST_DIR}/src/gtest-all.cc
   ar -rv libgtest.a gtest-all.o
 fi
 
 # Build tests
 echo "Building unit tests"
-g++-8 -std=c++17 -isystem $GTEST_DIR/include \
+g++-8 -std=c++2a -fconcepts -fopenmp -isystem $GTEST_DIR/include \
     -pthread matrix_test.cpp libgtest.a -o matrix_test
 
 # Run tests
+echo "Running unit tests"
 ./matrix_test
