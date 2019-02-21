@@ -1,4 +1,4 @@
-#include "matrix.hpp"
+#include "linalg/matrix.hpp"
 
 #include <gtest/gtest.h>
 
