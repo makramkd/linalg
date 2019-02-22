@@ -220,6 +220,46 @@ namespace {
     EXPECT_EQ(18, m(2, 3));
   }
 
+  TEST(MatrixTest, MatrixMultiplication) {
+    parmat::matrix<int> m(3, 4, {
+      1, 2, 3, 1,
+      1, 1, 2, 1,
+      3, 4, 5, 6,
+    });
+
+    parmat::matrix<int> m2(4, 5, {
+      1, 2, 3, 1, 3,
+      1, 1, 2, 1, 3,
+      3, 4, 5, 6, 3,
+      3, 4, 5, 6, 3,
+    });
+
+    auto m3 = m * m2;
+    parmat::matrix<int> expected(3, 5, {
+      15, 20, 27, 27, 21,
+      11, 15, 20, 20, 15,
+      40, 54, 72, 73, 54,
+    });
+
+    ASSERT_EQ(expected, m3);
+  }
+
+  TEST(MatrixTest, MatrixEqualityOperator) {
+    parmat::matrix<int> m(3, 4, {
+      1, 2, 3, 1,
+      1, 1, 2, 1,
+      3, 4, 5, 6,
+    });
+
+    parmat::matrix<int> m2(3, 4, {
+      1, 2, 3, 1,
+      1, 2, 2, 1,
+      3, 4, 5, 6,
+    });
+
+    ASSERT_NE(m, m2);
+  }
+
   TEST(MatrixTest, Identity) {
     auto i = parmat::identity<int>(32, 1);
 
