@@ -118,6 +118,17 @@ namespace parmat {
         return *this;
       }
 
+      matrix& operator*=(const T& scalar) {
+        for (size_type i = 0; i < this->rows; ++i) {
+          #pragma omp parallel for
+          for (size_type j = 0; j < this->cols; ++j) {
+            this->operator()(i, j) *= scalar;
+          }
+        }
+
+        return *this;
+      }
+
       // Get element at index (i, j)
       const T& operator()(size_type i, size_type j) const {
         return this->_mat[i * this->cols + j];
@@ -143,6 +154,11 @@ namespace parmat {
 
       friend matrix operator-(matrix lhs, const matrix& rhs) {
         lhs -= rhs;
+        return lhs;
+      }
+
+      friend matrix operator*(matrix lhs, const T& scalar) {
+        lhs *= scalar;
         return lhs;
       }
     private:
