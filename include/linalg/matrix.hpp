@@ -163,7 +163,6 @@ namespace parmat {
       }
 
       friend matrix operator*(const matrix& lhs, const matrix& rhs) {
-        // TODO: stub
         assert(lhs.cols == rhs.rows);
 
         matrix<T> result(lhs.rows, rhs.cols, static_cast<T>(0));
