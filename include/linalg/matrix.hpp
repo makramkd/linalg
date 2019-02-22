@@ -103,6 +103,21 @@ namespace parmat {
         return *this;
       }
 
+      matrix& operator-=(const matrix& rhs) {
+        // TODO: error handling?
+        assert(this->rows == rhs.rows);
+        assert(this->cols == rhs.cols);
+
+        for (size_type i = 0; i < this->rows; ++i) {
+          #pragma omp parallel for
+          for (size_type j = 0; j < this->cols; ++j) {
+            this->operator()(i, j) -= rhs(i, j);
+          }
+        }
+
+        return *this;
+      }
+
       // Get element at index (i, j)
       const T& operator()(size_type i, size_type j) const {
         return this->_mat[i * this->cols + j];
@@ -119,6 +134,16 @@ namespace parmat {
 
       size_type col_count() const {
         return this->cols;
+      }
+
+      friend matrix operator+(matrix lhs, const matrix& rhs) {
+        lhs += rhs;
+        return lhs;
+      }
+
+      friend matrix operator-(matrix lhs, const matrix& rhs) {
+        lhs -= rhs;
+        return lhs;
       }
     private:
       std::vector<T> _mat;

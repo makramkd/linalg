@@ -116,8 +116,83 @@ namespace {
     EXPECT_EQ(1, m(1, 1));
   }
 
-  TEST(MatrixTest, IndexOperator) {
+  TEST(MatrixTest, MinusEqualsOperator) {
+    parmat::matrix<int> m(2, 2, {
+      1, 0,
+      0, 1
+    });
 
+    parmat::matrix<int> m2(2, 2, {
+      0, 1,
+      1, 0
+    });
+
+    m -= m2;
+
+    EXPECT_EQ(1, m(0, 0));
+    EXPECT_EQ(-1, m(0, 1));
+    EXPECT_EQ(-1, m(1, 0));
+    EXPECT_EQ(1, m(1, 1));
+  }
+
+  TEST(MatrixTest, OperatorPlus) {
+    parmat::matrix<int> m(2, 2, {
+      1, 0,
+      0, 1
+    });
+
+    parmat::matrix<int> m2(2, 2, {
+      0, 1,
+      1, 0
+    });
+
+    auto m3 = m + m2;
+
+    EXPECT_EQ(1, m3(0, 0));
+    EXPECT_EQ(1, m3(0, 1));
+    EXPECT_EQ(1, m3(1, 0));
+    EXPECT_EQ(1, m3(1, 1));
+  }
+
+  TEST(MatrixTest, OperatorMinus) {
+    parmat::matrix<int> m(2, 2, {
+      1, 0,
+      0, 1
+    });
+
+    parmat::matrix<int> m2(2, 2, {
+      0, 1,
+      1, 0
+    });
+
+    auto m3 = m - m2;
+
+    EXPECT_EQ(1, m3(0, 0));
+    EXPECT_EQ(-1, m3(0, 1));
+    EXPECT_EQ(-1, m3(1, 0));
+    EXPECT_EQ(1, m3(1, 1));
+  }
+
+  TEST(MatrixTest, IndexOperator) {
+    // "Complicated" test
+    parmat::matrix<int> m(3, 4, {
+      1, 0, 0, 1,
+      0, 1, 0, 1,
+      0, 0, 1, 0,
+    });
+
+    EXPECT_EQ(1, m(0, 0));
+    EXPECT_EQ(0, m(0, 1));
+    EXPECT_EQ(0, m(0, 2));
+    EXPECT_EQ(1, m(0, 3));
+    EXPECT_EQ(0, m(1, 0));
+    EXPECT_EQ(1, m(1, 1));
+    EXPECT_EQ(0, m(1, 2));
+    EXPECT_EQ(1, m(1, 3));
+    EXPECT_EQ(0, m(2, 0));
+    EXPECT_EQ(0, m(2, 1));
+    EXPECT_EQ(1, m(2, 2));
+    EXPECT_EQ(0, m(2, 3));
   }
 
   TEST(MatrixTest, Identity) {
