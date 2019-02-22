@@ -161,6 +161,44 @@ namespace parmat {
         lhs *= scalar;
         return lhs;
       }
+
+      friend matrix operator*(const matrix& lhs, const matrix& rhs) {
+        // TODO: stub
+        assert(lhs.cols == rhs.rows);
+
+        matrix<T> result(lhs.rows, rhs.cols, static_cast<T>(0));
+
+        #pragma omp parallel for
+        for (size_type i = 0; i < lhs.rows; ++i) {
+          for (size_type j = 0; j < rhs.cols; ++j) {
+            for (size_type k = 0; k < lhs.cols; ++k) {
+              result(i, j) += lhs(i, k) * rhs(k, j);
+            }
+          }
+        }
+
+        return result;
+      }
+
+      friend bool operator==(const matrix& lhs, const matrix& rhs) {
+        assert(lhs.rows == rhs.rows);
+        assert(lhs.cols == rhs.cols);
+
+        // TODO: should use std::atomic_bool?
+        bool equal = true;
+        #pragma omp parallel for
+        for (size_type i = 0; i < rhs.rows; ++i) {
+          for (size_type j = 0; j < rhs.cols; ++j) {
+            equal = equal && (lhs(i, j) == rhs(i, j));
+          }
+        }
+
+        return equal;
+      }
+
+      friend bool operator!=(const matrix& lhs, const matrix& rhs) {
+        return !(lhs == rhs);
+      }
     private:
       std::vector<T> _mat;
       size_type rows;
