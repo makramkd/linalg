@@ -195,6 +195,31 @@ namespace {
     EXPECT_EQ(0, m(2, 3));
   }
 
+  TEST(MatrixTest, ScalarMultiplyOperator) {
+    // "Complicated" test
+    parmat::matrix<int> m(3, 4, {
+      1, 2, 3, 1,
+      1, 1, 2, 1,
+      3, 4, 5, 6,
+    });
+
+    int scalar = 3;
+    m *= scalar;
+
+    EXPECT_EQ(3, m(0, 0));
+    EXPECT_EQ(6, m(0, 1));
+    EXPECT_EQ(9, m(0, 2));
+    EXPECT_EQ(3, m(0, 3));
+    EXPECT_EQ(3, m(1, 0));
+    EXPECT_EQ(3, m(1, 1));
+    EXPECT_EQ(6, m(1, 2));
+    EXPECT_EQ(3, m(1, 3));
+    EXPECT_EQ(9, m(2, 0));
+    EXPECT_EQ(12, m(2, 1));
+    EXPECT_EQ(15, m(2, 2));
+    EXPECT_EQ(18, m(2, 3));
+  }
+
   TEST(MatrixTest, Identity) {
     auto i = parmat::identity<int>(32, 1);
 
